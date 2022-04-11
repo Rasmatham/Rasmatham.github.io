@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"target": "ES2015",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noImplicitAny": true,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"sourceMap": true,
+		"alwaysStrict": true,
+		"strict":true,
+		"forceConsistentCasingInFileNames": true,
+		"importHelpers": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true
+	},
+	"include": [
+		"*",
+		"*/*",
+		"*/*/*",
+		"*/*/*/*",
+		"*/*/*/*/*",
+		"*/*/*/*/*/*",
+		"*/*/*/*/*/*/*",
+		"*/*/*/*/*/*/*/*",
+		"*/*/*/*/*/*/*/*/*",
+		"*/*/*/*/*/*/*/*/*/*"
+	]
+}
