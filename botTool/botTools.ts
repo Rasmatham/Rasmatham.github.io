@@ -152,14 +152,14 @@ class multiChoiceValue {
 		return div;
 	}
 }
-class undevelopedValue {
+class UndevelopedValue {
 	get toHTMLElement () {
 		const p = document.createElement(`p`);
 		p.innerText = `This has not been added yet`;
 		return p;
 	}
 }
-type Value = StringValue | BoolValue | IntegerValue | multiChoiceValue;
+type Value = StringValue | BoolValue | IntegerValue | multiChoiceValue | UndevelopedValue;
 class ObjectEntry {
 	private _value: ObjectEquivalent;
 	private _key: {
@@ -247,7 +247,7 @@ window.onload = () => {
 		new ObjectEntry({key: {header: {text: `general config`, size: 1}}, value: 
 			new Obj({entries: [
 				new ObjectEntry({key: {header: {text: `Path to .ENV: `, size: 2}}, value: 
-					new StringValue({id: `envPath`}),
+					new StringValue({id: `envPath`})
 				})
 			]})
 		}),
@@ -256,7 +256,20 @@ window.onload = () => {
 		new ObjectEntry({key: {header: {text: `bot config`, size: 1}}, value: 
 			new Arr({entry: 
 				new ArrayEntry({value: 
-					new StringValue({id: `envPath`})
+					new Obj({entries: [
+						new ObjectEntry({key: {header: {text: `Name`, size: 2}}, value:
+							new StringValue({id: `name`})
+						}),
+						new ObjectEntry({key: {header: {text: `Client Options`, size: 2}}, value:
+							new UndevelopedValue()
+						}),
+						new ObjectEntry({key: {header: {text: `Token identifier`, size: 2}, hover: `Which token in the .ENV should be used?`}, value:
+							new StringValue({id: `token`})
+						}),
+						new ObjectEntry({key: {header: {text: `Features`, size: 2}}, value:
+							new UndevelopedValue()
+						}),
+					]})
 				})
 			})
 		})
