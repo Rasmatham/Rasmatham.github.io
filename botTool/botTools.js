@@ -101,6 +101,52 @@ class IntegerValue {
         return div;
     }
 }
+class multiChoiceValue {
+    constructor(input) {
+        this._id = input.id;
+        this._choices = input.choices;
+        this._label = input.label;
+        this._title = input.hoverText;
+    }
+    get label() {
+        if (this._label) {
+            const label = document.createElement(`label`);
+            label.id = `${this._id}_label`;
+            label.htmlFor = `${this._id}_field`;
+            label.innerText = this._label;
+            return label;
+        }
+    }
+    get field() {
+        const input = document.createElement(`select`);
+        input.id = `${this._id}_field`;
+        this._choices.forEach((choice) => {
+            const option = document.createElement(`option`);
+            option.innerText = choice;
+            input.appendChild(option);
+        });
+        return input;
+    }
+    get toHTMLElement() {
+        const div = document.createElement(`div`);
+        div.id = `${this._id}`;
+        if (this._title) {
+            div.title = this._title;
+        }
+        if (this.label) {
+            div.appendChild(this.label);
+        }
+        div.appendChild(this.field);
+        return div;
+    }
+}
+class undevelopedValue {
+    get toHTMLElement() {
+        const p = document.createElement(`p`);
+        p.innerText = `This has not been added yet`;
+        return p;
+    }
+}
 class ObjectEntry {
     constructor(input) {
         this._key = input.key;
