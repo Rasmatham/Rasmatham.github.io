@@ -138,7 +138,15 @@ class ArrayEntry {
     }
     get toHTMLElement() {
         const div = document.createElement(`div`);
+        const remove = document.createElement(`button`);
+        remove.innerText = `Remove element`;
         div.appendChild(this._value.toHTMLElement);
+        div.appendChild(remove);
+        remove.onclick = () => {
+            if (div.parentElement) {
+                div.parentElement.remove();
+            }
+        };
         return div;
     }
 }
