@@ -152,6 +152,49 @@ class MultiChoiceValue {
 		return div;
 	}
 }
+class AdvancedMultiChoiceValue {
+	private _id: string;
+	private _choices: {label: string, value: ObjectEquivalent}[];
+	private _label?: string;
+	private _title?: string;
+	constructor(input: {id: string, choices: {label: string, value: ObjectEquivalent}[], label?: string, hoverText?: string}){
+		this._id = input.id;
+		this._choices = input.choices;
+		this._label = input.label;
+		this._title = input.hoverText;
+	}
+	get label () {
+		if(this._label){
+			const label = document.createElement(`label`);
+			label.id = `${this._id}_label`;
+			label.htmlFor = `${this._id}_field`;
+			label.innerText = this._label;
+			return label;
+		}
+	}
+	get field () {
+		const input = document.createElement(`select`);
+		input.id = `${this._id}_field`;
+		this._choices.forEach((choice) => {
+			const option = document.createElement(`option`);
+			option.innerText = choice.label;
+			input.appendChild(option);
+		});
+		return input;
+	}
+	get toHTMLElement () {
+		const div = document.createElement(`div`);
+		div.id = `${this._id}`;
+		if(this._title){
+			div.title = this._title; 
+		}
+		if(this.label){
+			div.appendChild(this.label);
+		}
+		div.appendChild(this.field);
+		return div;
+	}
+}
 class timeDateValue {
 	private _id: string;
 	private _label?: string;
@@ -278,11 +321,90 @@ class Arr {
 		return arr;
 	}
 }
-type Collection = Obj | Arr;
+class CommonCommand {
+	private _size: number;
+	constructor(input: {size: number}){
+		this._size = input.size;
+	}
+	get toHTMLElement() {
+		return new Obj({entries: [
+			new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
+															new BoolValue({id: `active`})
+			}),
+			new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
+															new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
+			}),
+			new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
+				new Obj({entries: [
+					new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
+						new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
+					}),
+					new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
+						new Arr({entry:
+							new ArrayEntry({value:
+								new StringValue({id: `guildBlacklist`})
+							})
+						})
+					}),
+					new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
+					new Arr({entry:
+						new ArrayEntry({value:
+							new StringValue({id: `guildWhitelist`})
+						})
+					})
+					}),
+					new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
+					new Arr({entry:
+						new ArrayEntry({value:
+							new StringValue({id: `channelBlacklist`})
+						})
+					})
+					}),
+					new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
+					new Arr({entry:
+						new ArrayEntry({value:
+							new StringValue({id: `channelWhitelist`})
+						})
+					})
+					}),
+					new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
+					new Arr({entry:
+						new ArrayEntry({value:
+							new StringValue({id: `roleBlacklist`})
+						})
+					})
+					}),
+					new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
+					new Arr({entry:
+						new ArrayEntry({value:
+							new StringValue({id: `roleWhitelist`})
+						})
+					})
+					}),
+					new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
+					new Arr({entry:
+						new ArrayEntry({value:
+							new StringValue({id: `userBlacklist`})
+						})
+					})
+					}),
+					new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
+					new Arr({entry:
+						new ArrayEntry({value:
+							new StringValue({id: `userWhitelist`})
+						})
+					})
+					}),
+				]})
+			}),
+		]}).toHTMLElement;
+	}
+}
+
+type Collection = Obj | Arr | CommonCommand;
 type ObjectEquivalent = Value | Collection;
 window.onload = () => {
 	const config = new Obj({entries: [
-
 		new ObjectEntry({key: {header: {text: `general config`, size: 1}}, value: 
 			new Obj({entries: [
 				new ObjectEntry({key: {header: {text: `Path to .ENV: `, size: 2}}, value: 
@@ -290,8 +412,6 @@ window.onload = () => {
 				})
 			]})
 		}),
-
-
 		new ObjectEntry({key: {header: {text: `bot config`, size: 1}}, value: 
 			new Arr({entry: 
 				new ArrayEntry({value: 
@@ -303,7 +423,7 @@ window.onload = () => {
 							new Obj({entries: [
 								new ObjectEntry({key: {header: {text: `Prescence`, size: 3}}, value:
 									new Obj({entries: [
-										new ObjectEntry({key: {header: {text: `Status`, size: 3}}, value:
+										new ObjectEntry({key: {header: {text: `Status`, size: 4}}, value:
 											new MultiChoiceValue({id: `status`, choices: [`online`, `idle`, `invisible`, `dnd`]})
 										}),
 										new ObjectEntry({key: {header: {text: `AFK`, size: 3}}, value:
@@ -341,74 +461,8 @@ window.onload = () => {
 											new Arr({entry:
 												new ArrayEntry({value:
 													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-															new BoolValue({id: `active`})
-														}),
-														new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-															new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-															new Obj({entries: [
-																new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-																	new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-																}),
-																new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-																	new Arr({entry:
-																		new ArrayEntry({value:
-																			new StringValue({id: `guildBlacklist`})
-																		})
-																	})
-																}),
-																new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-																new Arr({entry:
-																	new ArrayEntry({value:
-																		new StringValue({id: `guildWhitelist`})
-																	})
-																})
-																}),
-																new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-																new Arr({entry:
-																	new ArrayEntry({value:
-																		new StringValue({id: `channelBlacklist`})
-																	})
-																})
-																}),
-																new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-																new Arr({entry:
-																	new ArrayEntry({value:
-																		new StringValue({id: `channelWhitelist`})
-																	})
-																})
-																}),
-																new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-																new Arr({entry:
-																	new ArrayEntry({value:
-																		new StringValue({id: `roleBlacklist`})
-																	})
-																})
-																}),
-																new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-																new Arr({entry:
-																	new ArrayEntry({value:
-																		new StringValue({id: `roleWhitelist`})
-																	})
-																})
-																}),
-																new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-																new Arr({entry:
-																	new ArrayEntry({value:
-																		new StringValue({id: `userBlacklist`})
-																	})
-																})
-																}),
-																new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-																new Arr({entry:
-																	new ArrayEntry({value:
-																		new StringValue({id: `userWhitelist`})
-																	})
-																})
-																}),
-															]})
+														new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+															new CommonCommand({size: 6})
 														}),
 														new ObjectEntry({key: {header: {text: `Name`, size: 5}}, value:
 															new StringValue({id: `name`})
@@ -508,812 +562,100 @@ window.onload = () => {
 										}),
 										new ObjectEntry({key: {header: {text: `Bot Link`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 										new ObjectEntry({key: {header: {text: `User Info`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 										new ObjectEntry({key: {header: {text: `Server Info`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 										new ObjectEntry({key: {header: {text: `Join Date`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 										new ObjectEntry({key: {header: {text: `Dice`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 										new ObjectEntry({key: {header: {text: `XKCD`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 										new ObjectEntry({key: {header: {text: `Maze`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 										new ObjectEntry({key: {header: {text: `Tic Tac Toe`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 										new ObjectEntry({key: {header: {text: `Coinflip`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 										new ObjectEntry({key: {header: {text: `Wordle`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 										new ObjectEntry({key: {header: {text: `Reboot`, size: 4}}, value:
 											new Obj({entries: [
-												new ObjectEntry({key: {header: {text: `Active`, size: 5}}, value:
-													new BoolValue({id: `active`})
-												}),
-												new ObjectEntry({key: {header: {text: `Visibility`, size: 5}}, value:
-													new MultiChoiceValue({id: `visibility`, choices: [`visible`, `private`, `choice`]})
-												}),
-												new ObjectEntry({key: {header: {text: `Permissions`, size: 5}}, value:
-													new Obj({entries: [
-														new ObjectEntry({key: {header: {text: `Default Blacklist/whitelist`, size: 6}}, value:
-															new MultiChoiceValue({id: `everyone`, choices: [`whitelist`, `blacklist`]})
-														}),
-														new ObjectEntry({key: {header: {text: `Server Blacklist`, size: 6}}, value:
-															new Arr({entry:
-																new ArrayEntry({value:
-																	new StringValue({id: `guildBlacklist`})
-																})
-															})
-														}),
-														new ObjectEntry({key: {header: {text: `Server WhiteList`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `guildWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Channel Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `channelWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `Role Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `roleWhitelist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Blacklist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userBlacklist`})
-															})
-														})
-														}),
-														new ObjectEntry({key: {header: {text: `User Whitelist`, size: 6}}, value:
-														new Arr({entry:
-															new ArrayEntry({value:
-																new StringValue({id: `userWhitelist`})
-															})
-														})
-														}),
-													]})
+												new ObjectEntry({key: {header: {text: `Common Command parameters`, size: 5}}, value:
+													new CommonCommand({size: 6})
 												}),
 											]})
 										}),
 
 									]})
 								}),
-								new ObjectEntry({key: {header: {text: `Triggers`, size: 4}}, value:
-									new UndevelopedValue()
+								new ObjectEntry({key: {header: {text: `Triggers`, size: 3}}, value:
+									new Arr({entry:
+										new ArrayEntry({value:
+											new Obj({entries: [
+												new ObjectEntry({key: {header: {text: `Active`, size: 4}}, value:
+													new BoolValue({id: `active`})
+												}),
+												new ObjectEntry({key: {header: {text: `Input`, size: 4}}, value:
+													new UndevelopedValue()
+												}),
+												new ObjectEntry({key: {header: {text: `Output`, size: 4}}, value:
+													new UndevelopedValue()
+												}),
+											]})
+										})
+									})
 								}),
 							]})
 						}),
