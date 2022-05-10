@@ -8,22 +8,11 @@
 		"preserveConstEnums": true,
 		"sourceMap": true,
 		"alwaysStrict": true,
-		"strict":true,
+		"strict": true,
 		"forceConsistentCasingInFileNames": true,
 		"importHelpers": true,
 		"resolveJsonModule": true,
 		"esModuleInterop": true
 	},
-	"include": [
-		"*",
-		"*/*",
-		"*/*/*",
-		"*/*/*/*",
-		"*/*/*/*/*",
-		"*/*/*/*/*/*",
-		"*/*/*/*/*/*/*",
-		"*/*/*/*/*/*/*/*",
-		"*/*/*/*/*/*/*/*/*",
-		"*/*/*/*/*/*/*/*/*/*"
-	]
+	"include": ["*", "*/*", "*/*/*", "*/*/*/*", "*/*/*/*/*", "*/*/*/*/*/*", "*/*/*/*/*/*/*", "*/*/*/*/*/*/*/*", "*/*/*/*/*/*/*/*/*", "*/*/*/*/*/*/*/*/*/*"]
 }
