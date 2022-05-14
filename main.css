@@ -1,0 +1,82 @@
+body {
+    margin: 0;
+    background-color: rgb(145, 229, 255);
+}
+
+#bar {
+    list-style: none;
+    overflow: hidden;
+    background-color: #11A0FF;
+    height: max(auto, 20px);
+}
+
+#bar>* {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#bar img {
+    height: max(5vh, 20px);
+}
+
+#bar h1 {
+    color: aqua;
+    font-family: audiowide;
+    font-size: max(3vh, 16px);
+    margin: 0;
+}
+
+#bar button {
+    float: right;
+    border: none;
+    color: aqua;
+    background-color: #11A0FF;
+    height: max(5vh, 20px);
+    font-size: max(2.5vh, 10px);
+    padding-left: 1vh;
+    padding-right: 1vh;
+}
+
+#bar button:hover,
+#bar button:focus {
+    outline: none;
+    background-color: aqua;
+    color: #11A0FF;
+}
+
+#content {
+    background-color: aqua;
+}
+
+#pages {
+    margin: auto;
+    padding: 0;
+    vertical-align: top;
+}
+
+#pages li {
+    list-style: none;
+    text-align: center;
+    margin: auto;
+    margin-top: max(1vh, 5px);
+}
+
+#pages li a:link {
+    text-decoration: none;
+    color: black;
+    color: #11A0FF;
+    font-size: max(min(5vh, 5vw), 20px);
+}
+
+#pages li a:visited {
+    text-decoration: none;
+}
+
+#pages li a:hover,
+#pages li a:focus {
+    outline: none;
+    background-color: #11A0FF;
+    color: aqua;
+    padding: 0.5vh;
+    border-radius: 4vh 4vh;
+}
