@@ -1,115 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="285.75mm"
-   height="285.75mm"
-   viewBox="0 0 285.75 285.75"
-   version="1.1"
-   id="svg5"
-   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
-   sodipodi:docname="drawing.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview7"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     inkscape:pageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:document-units="mm"
-     showgrid="false"
-     inkscape:lockguides="true"
-     inkscape:zoom="0.94379114"
-     inkscape:cx="268.59756"
-     inkscape:cy="764.99977"
-     inkscape:window-width="3440"
-     inkscape:window-height="1369"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
-  <defs
-     id="defs2" />
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(34.271194,-0.72908384)">
-    <ellipse
-       style="fill:#ffffff;stroke-width:0.326535"
-       id="path413"
-       cx="161.10422"
-       cy="98.180931"
-       rx="34.74292"
-       ry="34.871601"
-       transform="translate(-34.271194,0.72908384)" />
-    <ellipse
-       style="fill:#ffffff;stroke-width:0.300833"
-       id="path409"
-       cx="115.42371"
-       cy="94.577965"
-       rx="44.651089"
-       ry="46.195221"
-       transform="translate(-34.271194,0.72908384)" />
-    <ellipse
-       style="fill:#ffffff;stroke-width:0.335182"
-       id="path411"
-       cx="87.758049"
-       cy="119.15536"
-       rx="30.882597"
-       ry="33.970856"
-       transform="translate(-34.271194,0.72908384)" />
-    <rect
-       style="fill:#ffffff;stroke-width:0.0990153"
-       id="rect875"
-       width="41.676407"
-       height="6.5678592"
-       x="21.371328"
-       y="-157.55949"
-       ry="0"
-       transform="rotate(150)" />
-    <rect
-       style="fill:#ffffff;stroke-width:0.264583"
-       id="rect979"
-       width="6.9995413"
-       height="20.313831"
-       x="20.894875"
-       y="162.28647" />
-    <ellipse
-       style="fill:#ffffff;stroke-width:0.264583"
-       id="path517"
-       cx="24.405743"
-       cy="206.74176"
-       rx="5.4044542"
-       ry="36.673084" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="Layer 2"
-     transform="translate(34.271194,-0.72908384)">
-    <path
-       sodipodi:type="star"
-       style="fill:#fab835;fill-opacity:1"
-       id="path1207"
-       inkscape:flatsided="true"
-       sodipodi:sides="3"
-       sodipodi:cx="235.25494"
-       sodipodi:cy="623.72528"
-       sodipodi:r1="467.88763"
-       sodipodi:r2="233.94382"
-       sodipodi:arg1="0"
-       sodipodi:arg2="1.0471976"
-       inkscape:rounded="-3.46945e-18"
-       inkscape:randomized="0"
-       d="M 703.14258,623.72528 1.3111267,1028.9279 l 0,-810.4052 z"
-       transform="matrix(-0.21244054,0,0,0.21704896,177.04127,30.495663)"
-       inkscape:transform-center-x="24.849579"
-       inkscape:transform-center-y="1.9283257e-06" />
-  </g>
+<svg width="250mm" height="250mm" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<pattern id="p" width="100" height="100" patternUnits="userSpaceOnUse" patternTransform="rotate(45) scale(0.02)">
+			<path data-color="outline" fill="none" stroke="#FFA800" stroke-width="29.69" d="M50 0v100M100 50H0"/>
+		</pattern>
+	</defs>
+	<g transform="translate(34,-1)">
+		<ellipse style="fill:#ffffff" cx="160" cy="100" rx="35" ry="35" transform="translate(-30)"/>
+		<ellipse style="fill:#ffffff" cx="115" cy="95" rx="45" ry="45" transform="translate(-30)"/>
+		<ellipse style="fill:#ffffff" cx="90" cy="120" rx="30" ry="30" transform="translate(-35)"/>
+		<ellipse style="fill:#ffffff" cx="24.5" cy="200" rx="5" ry="40"/>
+		<rect style="fill:#ffffff" width="42" height="8" x="20" y="-158" transform="rotate(150)"/>
+		<rect style="fill:#ffffff" width="7" height="20" x="21" y="161"/>
+	</g>
+	<g>
+		<path fill="#FFBF35" d="M 62, 165.2, 220, 256.4, 220, 74"/>
+		<path fill="url(#p)" d="M 62, 165.2, 220, 256.4, 220, 74"/>
+	</g>
 </svg>
