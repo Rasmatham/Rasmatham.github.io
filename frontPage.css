@@ -1,0 +1,37 @@
+#pages {
+    margin: auto;
+    padding: 0;
+    vertical-align: top;
+}
+
+#pages li {
+    list-style: none;
+    text-align: center;
+    margin: 0;
+    margin-top: max(1vh, 5px);
+}
+
+#pages li a:link {
+    text-decoration: none;
+    color: black;
+    color: #11A0FF;
+    font-size: max(min(5vh, 5vw), 20px);
+}
+
+#pages li a:visited {
+    text-decoration: none;
+}
+
+#pages li a:hover,
+#pages li a:focus {
+    outline: none;
+    background-color: #11A0FF;
+    color: aqua;
+    padding: 0.5vh;
+    border-radius: 4vh 4vh;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}

@@ -16,14 +16,8 @@ body {
 }
 
 #bar img {
+    float: left;
     height: max(5vh, 20px);
-}
-
-#bar h1 {
-    color: aqua;
-    font-family: audiowide;
-    font-size: max(3vh, 16px);
-    margin: 0;
 }
 
 #bar button {
@@ -37,6 +31,14 @@ body {
     padding-right: 1vh;
 }
 
+#bar #title {
+    float: left;
+    color: aqua;
+    font-family: audiowide;
+    font-size: max(3vh, 16px);
+    margin: 0;
+}
+
 #bar button:hover,
 #bar button:focus {
     outline: none;
@@ -44,39 +46,19 @@ body {
     color: #11A0FF;
 }
 
+#bar #title:hover,
+#bar #title:focus {
+    outline: none;
+    background-color: inherit;
+    color: aqua;
+    cursor: pointer;
+}
+
 #content {
     background-color: aqua;
 }
 
-#pages {
-    margin: auto;
-    padding: 0;
-    vertical-align: top;
-}
-
-#pages li {
-    list-style: none;
-    text-align: center;
-    margin: auto;
-    margin-top: max(1vh, 5px);
-}
-
-#pages li a:link {
-    text-decoration: none;
-    color: black;
-    color: #11A0FF;
-    font-size: max(min(5vh, 5vw), 20px);
-}
-
-#pages li a:visited {
-    text-decoration: none;
-}
-
-#pages li a:hover,
-#pages li a:focus {
-    outline: none;
-    background-color: #11A0FF;
-    color: aqua;
-    padding: 0.5vh;
-    border-radius: 4vh 4vh;
+body iframe {
+    width: 100%;
+    height: calc(100% - max(5vh, 21px));
 }
