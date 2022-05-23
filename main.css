@@ -122,6 +122,7 @@ body {
     padding: 0;
     z-index: 2;
     position: fixed;
+    transition: right 250ms;
 }
 
 .menuItems_hidden {
@@ -131,7 +132,6 @@ body {
 
 .menuItems>*>* {
     width: 100%;
-    height: 25;
     background-color: #11A0FF;
     border: none;
 }
@@ -140,6 +140,7 @@ body {
     margin: 0;
     padding: 0;
     color: aqua;
+    font-size: 4vh;
 }
 
 .menuItems>li>button:hover {
