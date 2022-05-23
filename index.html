@@ -15,8 +15,46 @@
 
 <body>
     <div id="bar">
-        <button id="title"><img src="./icon.svg" alt="">RasMatHam</button>
-        <button>Useless Button</button>
+        <button tabindex="0" id="title">
+			<svg width="250mm" height="250mm" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+				<defs>
+					<pattern id="p" width="100" height="100" patternUnits="userSpaceOnUse" patternTransform="rotate(45) scale(0.02)">
+						<path data-color="outline" fill="none" stroke="#FFA800" stroke-width="29.69" d="M50 0v100M100 50H0"/>
+					</pattern>
+				</defs>
+				<g transform="translate(34,-1)">
+					<ellipse fill="#ffffff" cx="160" cy="100" rx="35" ry="35" transform="translate(-30)"/>
+					<ellipse fill="#ffffff" cx="115" cy="95" rx="45" ry="45" transform="translate(-30)"/>
+					<ellipse fill="#ffffff" cx="90" cy="120" rx="30" ry="30" transform="translate(-35)"/>
+					<ellipse class="drip" fill="#ffffff" cx="24.5" cy="200" rx="5" ry="40"/>
+					<rect class="drip" fill="#ffffff" width="42" height="8" x="20" y="-158" transform="rotate(150)"/>
+					<rect class="drip" fill="#ffffff" width="7" height="20" x="21" y="161"/>
+				</g>
+				<g>
+					<path fill="#FFBF35" d="M 62, 165.2, 220, 256.4, 220, 74"/>
+					<path fill="url(#p)" d="M 62, 165.2, 220, 256.4, 220, 74"/>
+				</g>
+			</svg>
+			<h1>RasMatHam</h1>
+		</button>
+        <button id="showMenu">
+			<svg id="menu" width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+				<defs>
+				</defs>
+				<rect class="dot" x="112.5" y="012.5" width="75" height="75" rx="50%" ry="50%" />
+				<rect class="dot" x="112.5" y="112.5" width="75" height="75" rx="50%" ry="50%" />
+				<rect class="dot" x="112.5" y="212.5" width="75" height="75" rx="50%" ry="50%" />
+			</svg>
+		</button>
     </div>
-    <iframe id="ifr" src="./frontPage.html" frameborder="0"></iframe>
+    <div id="content">
+        <iframe id="ifr" src="./frontPage.html" frameborder="0"></iframe>
+        <ul id="menuItems" class="menuItems">
+            <li>
+                <button>
+					<h2>Useless Button</h2>
+				</button>
+            </li>
+        </ul>
+    </div>
 </body>

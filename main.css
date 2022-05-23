@@ -7,55 +7,148 @@ body {
     list-style: none;
     overflow: hidden;
     background-color: #11A0FF;
-    height: max(auto, 20px);
+    height: max(min(10vw, 5vh), 20px);
+    margin: 0;
+    padding: 0;
 }
 
-#bar>* {
-    display: inline-block;
-    vertical-align: middle;
+#title {
+    display: inline-flexbox;
+    border: none;
+    background-color: #11A0FF;
+    color: aqua;
+    font-family: audiowide;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-#bar img {
+#title svg {
     float: left;
-    height: max(5vh, 20px);
+    height: max(min(10vw, 5vh), 20px);
+    width: max(min(10vw, 5vh), 20px);
+    margin: 0;
+    padding: 0;
+    transition: transform 100ms;
 }
 
-#bar button {
+#title:hover svg {
+    transform: rotate(30deg);
+    transition: transform 250ms;
+}
+
+.drip {
+    transition: transform 0ms, cx 0ms, cy 0ms, rx 0ms, ry 0ms, fill 0ms;
+}
+
+#title:hover .drip {
+    fill: none;
+    transition: fill 250ms;
+}
+
+#title:hover ellipse.drip {
+    fill: #ffffff;
+    cx: calc(24.5 + 5*(20));
+    cy: calc(200 + 5*(34.64));
+    rx: 10;
+    ry: 10;
+    transition: transform 250ms, cx 250ms, cy 250ms, rx 250ms, ry 250ms;
+}
+
+#title h1 {
+    float: left;
+    font-size: max(min(8vw, 4vh), 16px);
+    text-align: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#showMenu {
     float: right;
     border: none;
     color: aqua;
     background-color: #11A0FF;
-    height: max(5vh, 20px);
-    font-size: max(2.5vh, 10px);
-    padding-left: 1vh;
-    padding-right: 1vh;
-}
-
-#bar #title {
-    float: left;
-    color: aqua;
-    font-family: audiowide;
-    font-size: max(3vh, 16px);
+    height: max(min(10vw, 5vh), 20px);
+    width: max(min(10vw, 5vh), 20px);
     margin: 0;
+    padding: 0;
 }
 
-#bar button:hover,
-#bar button:focus {
-    outline: none;
-    background-color: aqua;
+#menu {
+    font-size: max(2vh, 20px);
+    text-align: center;
+    height: max(min(10vw, 5vh), 20px);
+    width: max(min(10vw, 5vh), 20px);
+    margin: 0;
+    padding: 0;
+}
+
+.dot {
+    fill: aqua;
+    transition: x ease-in-out 100ms, width ease-in-out 100ms, rx ease-in-out 100ms;
+}
+
+#menu:hover .dot,
+#menu:focus .dot {
+    x: 50;
+    width: 200;
+    rx: 12.5%;
+    transition: x ease-in-out 250ms, width ease-in-out 250ms, rx ease-in-out 250ms;
+}
+
+#showMenu:hover,
+#showMenu:focus {
+    /*outline: none;*/
     color: #11A0FF;
 }
 
-#bar #title:hover,
-#bar #title:focus {
-    outline: none;
+#title:hover,
+#title:focus {
+    /*outline: none;*/
     background-color: inherit;
     color: aqua;
     cursor: pointer;
 }
 
-#content {
+.menuItems {
+    float: right;
+    list-style: none;
+    background-color: #11A0FF;
+    top: max(min(10vw, 5vh), 20px);
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 2;
+    position: fixed;
+}
+
+.menuItems_hidden {
+    right: -200;
+    transition: right 250ms;
+}
+
+.menuItems>*>* {
+    width: 100%;
+    height: 25;
+    background-color: #11A0FF;
+    border: none;
+}
+
+.menuItems>*>*>* {
+    margin: 0;
+    padding: 0;
+    color: aqua;
+}
+
+.menuItems>li>button:hover {
     background-color: aqua;
+    border: none;
+}
+
+#content {
+    overflow: hidden;
 }
 
 body iframe {
