@@ -126,7 +126,7 @@ body {
 }
 
 .menuItems_hidden {
-    right: -200;
+    right: -1000%;
     transition: right 250ms;
 }
 
