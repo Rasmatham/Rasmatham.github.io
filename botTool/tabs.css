@@ -1,0 +1,82 @@
+.tabcontrol {
+	display: flex;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+.tabHeaders {
+	overflow-y: auto;
+	margin: 0;
+	padding: 0;
+	width: 200px;
+}
+
+.tabHeaders::-webkit-scrollbar-track
+{
+	background-color:transparent;
+	z-index: 2;
+}
+
+.tabHeaders::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: transparent;
+	z-index: 2;
+}
+
+.tabHeaders::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: transparent;
+	z-index: 2;
+}
+.tabHeaders:hover::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: #ffffffa4;
+}
+
+.tabHeaders ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.tabHeaders ul li {
+	width: 100%;
+	display: flex;
+	margin: 0;
+	padding: 0;
+}
+
+
+.tabHeaders ul li button * {
+	width: 150;
+	margin: 0;
+	padding: 0;
+}
+
+.tabButton {
+	width: 160px;
+	display: flex;
+	margin: 0;
+	padding: 0;
+	justify-content: center;
+}
+
+.closeTab {
+	width: 40px;
+	text-align: top;
+	margin: 0;
+	padding: 0;
+}
+
+.tabButton.fullWidth{
+	width: 200px;
+}
+
+.tabContent {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
