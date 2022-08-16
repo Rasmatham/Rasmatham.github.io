@@ -1,21 +1,26 @@
 class TabControl {
-    constructor(tabs) {
-        this.addTabs = (tabs) => {
+    constructor(tabs, canBeClosed = true) {
+        this.addTabs = (tabs, canBeClosed = true) => {
             tabs === null || tabs === void 0 ? void 0 : tabs.forEach((tab, id) => {
                 this._tabs.set(id, tab);
                 const header = document.createElement(`div`);
                 const tabOpen = document.createElement(`button`);
-                tabOpen.className = `tabOpen`;
-                const tabClose = document.createElement(`button`);
-                tabClose.className = `tabClose`;
+                tabOpen.classList.add(`tabOpen`);
                 header.appendChild(tabOpen);
                 tabOpen.appendChild(tab.tabHeader);
-                header.appendChild(tabClose);
-                tabClose.textContent = `X`;
+                if (canBeClosed) {
+                    const tabClose = document.createElement(`button`);
+                    tabClose.classList.add(`tabClose`);
+                    header.appendChild(tabClose);
+                    tabClose.textContent = `X`;
+                    tabClose.addEventListener(`click`, () => {
+                        this.removeTab(id);
+                    });
+                }
                 header.id = `header_${id}`;
-                header.className = `tabHeader`;
+                header.classList.add(`tabHeader`);
                 tab.tabContent.id = `content_${id}`;
-                tab.tabContent.className = `tabContent`;
+                tab.tabContent.classList.add(`tabContent`);
                 this._headers.appendChild(header);
                 this._contents.appendChild(tab.tabContent);
                 tabOpen.addEventListener(`click`, (ev) => {
@@ -26,9 +31,6 @@ class TabControl {
                     tab.tabContent.style.display = `block`;
                     (_a = this._headers.querySelector(`.selected`)) === null || _a === void 0 ? void 0 : _a.classList.remove(`selected`);
                     header.classList.add(`selected`);
-                });
-                tabClose.addEventListener(`click`, () => {
-                    this.removeTab(id);
                 });
             });
             return this;
@@ -43,14 +45,14 @@ class TabControl {
         };
         this._tabs = new Map(tabs);
         this.html = document.createElement(`div`);
-        this.html.className = `tabControl`;
+        this.html.classList.add(`tabControl`);
         this._headers = document.createElement(`div`);
-        this._headers.className = `tabHeaders`;
+        this._headers.classList.add(`tabHeaders`);
         this._contents = document.createElement(`div`);
-        this._contents.className = `tabContents`;
+        this._contents.classList.add(`tabContents`);
         this.html.appendChild(this._headers);
         this.html.appendChild(this._contents);
-        this.addTabs(this._tabs);
+        this.addTabs(this._tabs, canBeClosed);
     }
 }
 export default TabControl;

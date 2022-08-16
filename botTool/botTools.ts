@@ -130,7 +130,9 @@ window.addEventListener(`load`, () => {
 	}
 
 	const tabs = new TabControl(new Map([
-		[`0`, {tabHeader: test[0], tabContent: test[1]}],
+		[`0`, {tabHeader: test[0], tabContent: test[1]}]
+	]), false)
+	tabs.addTabs(new Map([
 		[`1`, {tabHeader: test[2], tabContent: test[3]}],
 		[`2`, {tabHeader: test[4], tabContent: test[5]}],
 		[`3`, {tabHeader: test[6], tabContent: test[7]}],
@@ -145,9 +147,7 @@ window.addEventListener(`load`, () => {
 		[`12`, {tabHeader: test[24], tabContent: test[25]}],
 		[`13`, {tabHeader: test[26], tabContent: test[27]}],
 		[`14`, {tabHeader: test[28], tabContent: test[29]}],
-		[`15`, {tabHeader: test[30], tabContent: test[31]}]
-	]))
-	tabs.addTabs(new Map([
+		[`15`, {tabHeader: test[30], tabContent: test[31]}],
 		[`16`, {tabHeader: test[32], tabContent: test[33]}],
 		[`17`, {tabHeader: test[34], tabContent: test[35]}],
 		[`18`, {tabHeader: test[36], tabContent: test[37]}],
