@@ -1,9 +1,4 @@
-//#region type declarations
-	type keyVal<T> = {
-		key: string,
-		value: T
-	}
-//#endregion
+import TabControl from "./tabs.js"
 
 //#region Discord api types
 enum locale {
@@ -88,9 +83,9 @@ enum userFlags {
 
 }
 enum nitroLevel {
-	none = 0,
-	classic = 1,
-	full = 2
+	None = 0,
+	Classic = 1,
+	Full = 2
 }
 type DiscordUser = {
 	id: string
@@ -111,253 +106,64 @@ type DiscordUser = {
 }
 //#endregion
 
-//#region I made tabs
-type TabOptions = {
-	header: HTMLElement|string,
-	content: HTMLElement,
-	id: string,
-	removable?: boolean,
-	openOnCreation?: boolean
-}
-
-class HTMLTabControl {
-	private _pages: keyVal<HTMLTab>[];
-	private _div: HTMLDivElement;
-	private _headers: HTMLDivElement;
-	private _content: HTMLElement
-	private _ul: HTMLUListElement;
-	constructor() {
-		this._pages = [];
-		this._div = document.createElement(`div`);
-		this._headers = document.createElement(`div`);
-		this._content = document.createElement(`div`);
-		this._ul = document.createElement(`ul`)
-		this._headers.appendChild(this._ul)
-		this._div.appendChild(this._headers)
-	}
-	addPages(tabs: HTMLTab[]) {
-		tabs.forEach((tab) => {
-			if(!this._ids.includes(tab.id)){
-				this._pages.push({key: tab.id, value: tab})
-				this.createTab(tab)
-			}
-		})
-		return this
-	}
-
-	private createTab(page: HTMLTab){
-		const tab = document.createElement(`li`)
-		this._ul.appendChild(tab)
-		const tabButton = document.createElement(`button`)
-		tab.appendChild(tabButton)
-		const tabHeader = page.header
-		tabButton.appendChild(tabHeader)
-
-		if(page.removable){
-			const closeButton = document.createElement(`button`)
-			tab.appendChild(closeButton)
-			closeButton.addEventListener(`click`, () => {
-				this._pages = this._pages.filter((pageIndex) => page.id != pageIndex.value.id)
-				tab.remove()
-				this._content.remove()
-				console.log(this._ids, page.id)
-				console.log(this._ids.indexOf(page.id) - 1)
-				console.log(this._pages[this._ids.indexOf(page.id) - 1].value.content)
-				this._content = this._pages[0].value.content
-				this._div.appendChild(this._content)
-			})
-			closeButton.textContent = `X`
-			closeButton.className = `closeTab`
-			tabButton.className = `tabButton`
-		} else {
-			tabButton.className = `tabButton fullWidth`
-		}
-
-		tabButton.addEventListener(`click`, () => {
-			this._content.remove()
-			this._content = page.content
-			this._div.appendChild(this._content)
-		})
-		if(page.openNow){
-			tabButton.click()
-		}
-	}
-
-	private get _ids() {
-		return this._pages.map((page) => page.key)
-	}
-
-	get HTML():HTMLElement {
-		this._div.className = `tabControl`
-		let content:HTMLElement = document.createElement(`div`)
-		content.className = `tabContent`
-		this._headers.className = `tabHeaders`
-		this._pages.forEach((page) => this.createTab(page.value))
-		return this._div
-	}
-}
-class HTMLTab {
-	private _header: HTMLElement;
-	private _content: HTMLElement;
-	private _removable: boolean;
-	private _openNow: boolean;
-	private _id: string
-	constructor(tabOptions: TabOptions) {
-		if(typeof tabOptions.header === `string`){
-			const temp = document.createElement(`h1`)
-			temp.textContent = tabOptions.header;
-			this._header = temp;
-		} else {
-			this._header = tabOptions.header
-		}
-		this._content = tabOptions.content;
-		this._removable = tabOptions.removable !== false
-		this._openNow = tabOptions.openOnCreation !== false
-		this._id = tabOptions.id
-	}
-	get header() {
-		return this._header
-	}
-	get content() {
-		return this._content
-	}
-	get removable() {
-		return this._removable
-	}
-	get openNow() {
-		return this._openNow
-	}
-	get id() {
-		return this._id
-	}
-}
-//#endregion
-
-//#region get value from url
-enum httpRequestMethod {
-	get = `GET`,
-	head = `HEAD`,
-	post = `POST`,
-	put = `PUT`,
-	delete = `DELETE`,
-	connect = `CONNECT`,
-	options = `OPTIONS`,
-	trace = `TRACE`,
-	patch = `PATCH`
-}
-enum xhrReadyState {
-	unsent = 0,
-	opened = 1,
-	headersRecieved = 2,
-	loading = 3,
-	done = 4
-}
-enum httpStatus {
-	ok = 200
-}
-const HTTPReq = (reqInput: {
-	url:string | URL,
-	reqType:httpRequestMethod,
-	headers?: keyVal<string>[]
-},
-cb: (returnObject:any) => void) => {
-	const xhr = new XMLHttpRequest();
-	xhr.open(reqInput.reqType, reqInput.url)
-	reqInput.headers?.forEach((pair) => {
-		xhr.setRequestHeader(pair.key, pair.value)
-	})
-	xhr.addEventListener(`load`, () => {
-		if (xhr.readyState === xhrReadyState.done) {
-			if (xhr.status === httpStatus.ok) {
-				cb(JSON.parse(xhr.responseText))
-			} else {
-				console.error(xhr.statusText)
-			}
-		}
-	})
-	xhr.addEventListener(`error`, () => {
-		console.error(xhr.statusText)
-	})
-	xhr.send()
-}
-//#endregion
-
 
 window.addEventListener(`load`, () => {
-	const botList = new HTMLTabControl()
-	document.body.appendChild(botList.HTML)
 	const tabStyle = document.createElement(`link`)
+	tabStyle.rel = `stylesheet`;
+	tabStyle.href = `tabs.css`;
 	document.head.appendChild(tabStyle)
-	tabStyle.rel = `stylesheet`
-	tabStyle.href = `tabs.css`
 	const style = document.createElement(`link`)
+	style.rel = `stylesheet`;
+	style.href = `style.css`;
 	document.head.appendChild(style)
-	style.rel = `stylesheet`
-	style.href = `style.css`
-	//=========================================================
-	const addBot = {
-		header: document.createElement(`h1`),
-		content: document.createElement(`div`),
-		removable: false,
-		id: `addBot`
+	const tabScript = document.createElement(`script`)
+	tabScript.type = `module`;
+	tabScript.src = `tabs.js`;
+	document.head.appendChild(style)
+
+	const test:Array<HTMLElement> = []
+	for (let i = 0; i < 100 ; i++) {
+		const btn = document.createElement(`h1`)
+		btn.textContent = `test${i}`
+		btn.id = `btn${i}`
+		test.push(btn)
 	}
-	addBot.header.textContent = `Add Bot`
-	
-	const label = document.createElement(`label`)
-	addBot.content.appendChild(label)
-	label.textContent = `Bot Token: `
-	label.htmlFor = `tokenInput`
-	label.title = `The token is never sent anywhere other than Discord and your computer. The token is only used to get information about the bot for use on this page`
 
-	const tokenField = document.createElement(`input`)
-	addBot.content.appendChild(tokenField)
-	tokenField.id = label.htmlFor
-	tokenField.addEventListener(`keydown`, (e) => {
-		if (!e.repeat && e.key === `Enter`){
-			apply.click()
-		}
-	})
-
-	const apply = document.createElement(`button`)
-	addBot.content.appendChild(apply)
-	apply.textContent = `Apply`
-	apply.addEventListener(`click`, () => {
-		const newBot:TabOptions = {
-			header: document.createElement(`div`),
-			content: document.createElement(`input`),
-			id: ``
-
-		}
-		if(newBot.header instanceof HTMLDivElement){
-			newBot.header.title = tokenField.value
-			tokenField.value = ``
-			
-			HTTPReq({
-				reqType: httpRequestMethod.get,
-				headers: [
-					{
-						key: `Authorization`,
-						value: `Bot ${newBot.header.title}`
-					}
-				],
-				url: `https://discord.com/api/v10/users/@me`
-			}, (client:DiscordUser) => {
-				if(newBot.header instanceof HTMLDivElement){
-					const pfp = document.createElement(`img`)
-					newBot.header.appendChild(pfp)
-					pfp.src = client.avatar?
-						`https://cdn.discordapp.com/avatars/${client.id}/${client.avatar}`:
-						`https://cdn.discordapp.com/embed/avatars/${Number(client.discriminator)%5}.png`
-					const username = document.createElement(`h1`)
-					newBot.header.appendChild(username)
-					username.textContent = client.username
-					newBot.id = newBot.header.title
-					botList.addPages([new HTMLTab(newBot)])
-				}
-			})
-		}
-	})
-
-	//=========================================================
-	botList.addPages([new HTMLTab(addBot)])
+	const tabs = new TabControl(new Map([
+		[`0`, {tabHeader: test[0], tabContent: test[1]}],
+		[`1`, {tabHeader: test[2], tabContent: test[3]}],
+		[`2`, {tabHeader: test[4], tabContent: test[5]}],
+		[`3`, {tabHeader: test[6], tabContent: test[7]}],
+		[`4`, {tabHeader: test[8], tabContent: test[9]}],
+		[`5`, {tabHeader: test[10], tabContent: test[11]}],
+		[`6`, {tabHeader: test[12], tabContent: test[13]}],
+		[`7`, {tabHeader: test[14], tabContent: test[15]}],
+		[`8`, {tabHeader: test[16], tabContent: test[17]}],
+		[`9`, {tabHeader: test[18], tabContent: test[19]}],
+		[`10`, {tabHeader: test[20], tabContent: test[21]}],
+		[`11`, {tabHeader: test[22], tabContent: test[23]}],
+		[`12`, {tabHeader: test[24], tabContent: test[25]}],
+		[`13`, {tabHeader: test[26], tabContent: test[27]}],
+		[`14`, {tabHeader: test[28], tabContent: test[29]}],
+		[`15`, {tabHeader: test[30], tabContent: test[31]}]
+	]))
+	tabs.addTabs(new Map([
+		[`16`, {tabHeader: test[32], tabContent: test[33]}],
+		[`17`, {tabHeader: test[34], tabContent: test[35]}],
+		[`18`, {tabHeader: test[36], tabContent: test[37]}],
+		[`19`, {tabHeader: test[38], tabContent: test[39]}],
+		[`20`, {tabHeader: test[40], tabContent: test[41]}],
+		[`21`, {tabHeader: test[42], tabContent: test[43]}],
+		[`22`, {tabHeader: test[44], tabContent: test[45]}],
+		[`23`, {tabHeader: test[46], tabContent: test[47]}],
+		[`24`, {tabHeader: test[48], tabContent: test[49]}],
+		[`25`, {tabHeader: test[50], tabContent: test[51]}],
+		[`26`, {tabHeader: test[52], tabContent: test[53]}],
+		[`27`, {tabHeader: test[54], tabContent: test[55]}],
+		[`28`, {tabHeader: test[56], tabContent: test[57]}],
+		[`29`, {tabHeader: test[58], tabContent: test[59]}],
+		[`30`, {tabHeader: test[60], tabContent: test[61]}],
+		[`31`, {tabHeader: test[62], tabContent: test[63]}]
+	]))
+	document.body.appendChild(tabs.html)
 })

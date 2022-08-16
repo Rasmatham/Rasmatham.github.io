@@ -1,82 +1,102 @@
-.tabcontrol {
+/*
+tabControl
+tabHeaders
+tabHeader
+tabContentds
+tabContent
+*/
+:root {
+	--tab-width: 15%
+}
+
+.tabControl {
 	display: flex;
 	height: 100%;
-	margin: 0;
-	padding: 0;
 }
+
 .tabHeaders {
+	--max-tab-width: max(var(--tab-width), 100px);
+	width: var(--max-tab-width);
 	overflow-y: auto;
-	margin: 0;
+}
+
+.tabHeaders {
 	padding: 0;
-	width: 200px;
-}
-
-.tabHeaders::-webkit-scrollbar-track
-{
-	background-color:transparent;
-	z-index: 2;
-}
-
-.tabHeaders::-webkit-scrollbar
-{
-	width: 5px;
-	background-color: transparent;
-	z-index: 2;
-}
-
-.tabHeaders::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	background-color: transparent;
-	z-index: 2;
-}
-.tabHeaders:hover::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	background-color: #ffffffa4;
-}
-
-.tabHeaders ul {
-	list-style: none;
+	padding-top: 1px;
 	margin: 0;
-	padding: 0;
 }
 
-.tabHeaders ul li {
-	width: 100%;
-	display: flex;
+.tabHeader {
+	height: max(5%, 50px);
+	padding-bottom: 1px;
+	padding-left: 1px;
+	padding-right: 1px;
 	margin: 0;
-	padding: 0;
 }
 
+.tabOpen * {
+	font-size:medium;
+}
 
-.tabHeaders ul li button * {
-	width: 150;
+.tabOpen {
+	width: max(80%);
+	height: 100%;
+	padding: 0;
 	margin: 0;
-	padding: 0;
+	vertical-align:top;
+	border: 1px solid gray;
+	border-right: none;
+	border-bottom-left-radius: 5px;
+	border-top-left-radius: 5px;
 }
 
-.tabButton {
-	width: 160px;
-	display: flex;
+
+.tabHeader:hover button{
+	filter: brightness(90%);
+}
+
+.selected button{
+	filter: brightness(80%);
+}
+.selected:hover button{
+	filter: brightness(70%);
+}
+
+.tabClose {
+	width: 20%;
+	height: 100%;
+	padding: 0;
 	margin: 0;
-	padding: 0;
-	justify-content: center;
+	vertical-align:middle;
+	text-align: center;
+	border: 1px solid gray;
+	border-left: none;
+	border-bottom-right-radius: 5px;
+	border-top-right-radius: 5px;
 }
 
-.closeTab {
-	width: 40px;
-	text-align: top;
-	margin: 0;
-	padding: 0;
+.tabClose:hover:before {
+	border-left: none;
+	border-bottom-right-radius: 5px;
+	border-top-right-radius: 5px;
+	--rad: 10px;
+    content: '';
+    width: calc(var(--rad) * 2);
+    height: calc(var(--rad) * 2);
+    background: rgba(0, 0, 0, 10%);
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    position: absolute;
+	top: calc(50% - var(--rad));
+	left: calc(50% - var(--rad));
 }
 
-.tabButton.fullWidth{
-	width: 200px;
+.tabContents {
+	height: 100%;
+	width: calc(100% - var(--tab-width))
 }
 
 .tabContent {
-	margin: 0;
-	padding: 0;
-	width: 100%;
+	display: none
 }
