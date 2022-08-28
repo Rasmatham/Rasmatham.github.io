@@ -1,4 +1,5 @@
-import TabControl from "./tabs.js"
+import { TabControl, Tab, Tabs } from "./modules/tabs/tabs.js"
+import * as httpReq from "./modules/httpReq/httpReq.js"
 
 //#region Discord api types
 enum locale {
@@ -106,64 +107,52 @@ type DiscordUser = {
 }
 //#endregion
 
-
 window.addEventListener(`load`, () => {
-	const tabStyle = document.createElement(`link`)
-	tabStyle.rel = `stylesheet`;
-	tabStyle.href = `tabs.css`;
-	document.head.appendChild(tabStyle)
+	//#region add other files
+	const tabScript = document.createElement(`script`)
+	tabScript.type = `module`;
+	tabScript.src = `./modules/tabs/tabs.js`;
+	document.head.appendChild(tabScript)
 	const style = document.createElement(`link`)
 	style.rel = `stylesheet`;
 	style.href = `style.css`;
 	document.head.appendChild(style)
-	const tabScript = document.createElement(`script`)
-	tabScript.type = `module`;
-	tabScript.src = `tabs.js`;
-	document.head.appendChild(style)
+	const httpScript = document.createElement(`script`)
+	httpScript.type = `module`;
+	httpScript.src = `./modules/httpReq/httpReq.js`;
+	document.head.appendChild(httpScript)
+	//#endregion
 
-	const test:Array<HTMLElement> = []
-	for (let i = 0; i < 100 ; i++) {
-		const btn = document.createElement(`h1`)
-		btn.textContent = `test${i}`
-		btn.id = `btn${i}`
-		test.push(btn)
+	const addBot:Tab = {
+		tabHeader: document.createElement(`div`),
+		tabContent: document.createElement(`div`)
 	}
 
+	const x:Tabs = new Map([
+		[`abc`, addBot]
+	])
+
+	//#region
+	const addBotVars = {
+		header: {
+			title: document.createElement(`h1`)
+		},
+		content: {
+
+		}
+	}
+
+	addBotVars.header.title.textContent = `test`
+	addBot.tabHeader.appendChild(addBotVars.header.title)
+
+	
+	const addBotContent = document.createElement(`input`)
+	addBot.tabContent.appendChild(addBotContent)
+	//#endregion
+
 	const tabs = new TabControl(new Map([
-		[`0`, {tabHeader: test[0], tabContent: test[1]}]
-	]), false)
-	tabs.addTabs(new Map([
-		[`1`, {tabHeader: test[2], tabContent: test[3]}],
-		[`2`, {tabHeader: test[4], tabContent: test[5]}],
-		[`3`, {tabHeader: test[6], tabContent: test[7]}],
-		[`4`, {tabHeader: test[8], tabContent: test[9]}],
-		[`5`, {tabHeader: test[10], tabContent: test[11]}],
-		[`6`, {tabHeader: test[12], tabContent: test[13]}],
-		[`7`, {tabHeader: test[14], tabContent: test[15]}],
-		[`8`, {tabHeader: test[16], tabContent: test[17]}],
-		[`9`, {tabHeader: test[18], tabContent: test[19]}],
-		[`10`, {tabHeader: test[20], tabContent: test[21]}],
-		[`11`, {tabHeader: test[22], tabContent: test[23]}],
-		[`12`, {tabHeader: test[24], tabContent: test[25]}],
-		[`13`, {tabHeader: test[26], tabContent: test[27]}],
-		[`14`, {tabHeader: test[28], tabContent: test[29]}],
-		[`15`, {tabHeader: test[30], tabContent: test[31]}],
-		[`16`, {tabHeader: test[32], tabContent: test[33]}],
-		[`17`, {tabHeader: test[34], tabContent: test[35]}],
-		[`18`, {tabHeader: test[36], tabContent: test[37]}],
-		[`19`, {tabHeader: test[38], tabContent: test[39]}],
-		[`20`, {tabHeader: test[40], tabContent: test[41]}],
-		[`21`, {tabHeader: test[42], tabContent: test[43]}],
-		[`22`, {tabHeader: test[44], tabContent: test[45]}],
-		[`23`, {tabHeader: test[46], tabContent: test[47]}],
-		[`24`, {tabHeader: test[48], tabContent: test[49]}],
-		[`25`, {tabHeader: test[50], tabContent: test[51]}],
-		[`26`, {tabHeader: test[52], tabContent: test[53]}],
-		[`27`, {tabHeader: test[54], tabContent: test[55]}],
-		[`28`, {tabHeader: test[56], tabContent: test[57]}],
-		[`29`, {tabHeader: test[58], tabContent: test[59]}],
-		[`30`, {tabHeader: test[60], tabContent: test[61]}],
-		[`31`, {tabHeader: test[62], tabContent: test[63]}]
+		[`1`, addBot]
+	]), false).addTabs(new Map([
 	]))
 	document.body.appendChild(tabs.html)
 })

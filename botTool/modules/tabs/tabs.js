@@ -1,4 +1,4 @@
-class TabControl {
+export class TabControl {
     constructor(tabs, canBeClosed = true) {
         this.addTabs = (tabs, canBeClosed = true) => {
             tabs === null || tabs === void 0 ? void 0 : tabs.forEach((tab, id) => {
@@ -55,5 +55,10 @@ class TabControl {
         this.addTabs(this._tabs, canBeClosed);
     }
 }
-export default TabControl;
+window.addEventListener(`load`, () => {
+    const tabStyle = document.createElement(`link`);
+    tabStyle.rel = `stylesheet`;
+    tabStyle.href = `./modules/tabs/tabs.css`;
+    document.head.appendChild(tabStyle);
+});
 //# sourceMappingURL=tabs.js.map

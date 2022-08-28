@@ -1,15 +1,15 @@
 //#region type declarations
-type Tab = {
+export type Tab = {
 	tabHeader: HTMLElement,
 	tabContent: HTMLElement
 }
 
-type ID = string
+export type ID = string
 
-type Tabs = Map<ID, Tab>
+export type Tabs = Map<ID, Tab>
 //#endregion
 
-class TabControl {
+export class TabControl {
 	html: HTMLDivElement
 	private _tabs: Tabs
 	private _headers: HTMLDivElement
@@ -73,4 +73,9 @@ class TabControl {
 		return this
 	}
 }
-export default TabControl
+window.addEventListener(`load`, () => {
+	const tabStyle = document.createElement(`link`)
+	tabStyle.rel = `stylesheet`;
+	tabStyle.href = `./modules/tabs/tabs.css`;
+	document.head.appendChild(tabStyle)
+})

@@ -32,6 +32,7 @@ tabContent
 	padding-left: 1px;
 	padding-right: 1px;
 	margin: 0;
+	border-radius: 5px;
 }
 
 .tabOpen * {
